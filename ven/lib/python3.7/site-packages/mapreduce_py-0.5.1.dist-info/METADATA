@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: mapreduce-py
+Version: 0.5.1
+Summary: "A simple multi-processing based MapReduce framework"
+Home-page: https://github.com/royqh1979/pymapreduce
+Author: Roy Qu
+Author-email: royqh1979@gmail.com
+License: MIT
+Keywords: MapReduce,functional
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Utilities
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+
+A Multi-processing based single-host MapReduce Framework
+========================================================
+
+This is a simple mapreduce framework.
+
+Sample program
+----------------------
+.. code-block:: python
+
+    from mapreduce import *
+    from math import ceil, sqrt
+
+
+    def mapper_2(item):
+        return (item + 5) * 23 - 1
+
+
+    def reducer_2(accumulated, item):
+        return accumulated + item
+
+
+    def is_prime(n):
+        for i in range(2, ceil(sqrt(n))):
+            if n % i == 0:
+                return False
+        return True
+
+
+    if __name__ == "__main__":
+        N = 150000
+        print('* map & reduce ')
+        mr = MapReducer().prefilter(is_prime).mapper(mapper_2).reducer(reducer_2, 0)
+        result = mr(range(N))
+        print('  MR Result  :', result)
+        n = sum([(n + 5) * 23 - 1 for n in range(N) if is_prime(n)])
+        print('  Validation:', n)
+
+
+
+
+
+
+History
+===========
+0.5.1
+----------
+* update examples
+* optimize export & imports
+
+0.5.0
+----------
+* process speed optimized
+
+0.1.0
+----------
+* First release
+
